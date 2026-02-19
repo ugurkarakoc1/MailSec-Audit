@@ -1,33 +1,89 @@
-# MailSec-Audit (SAFE) — Web + DNS Policy + SMTP Transport
+📧 MailSec-Audit (SAFE)
 
-A **SAFE**, passive security assessment framework for mail infrastructure:
-- **Web Access**: OWA/ECP exposure, TLS sanity, headers, cookies, auth-flow hints (no brute force)
-- **DNS Policy**: SPF / DKIM / DMARC / MTA-STS / TLS-RPT
-- **SMTP Transport**: banner, STARTTLS availability, TLS handshake/cert validation (best-effort), AUTH advertisement (no auth attempts)
 
-## What it does NOT do
-- No brute force / credential stuffing / spraying
-- No exploitation / persistence
-- No destructive testing
 
-## Install
-```bash
+🔒 SAFE & Passive Mail Security Assessment Framework
+
+MailSec-Audit, mail altyapıları için pasif ve güvenli (SAFE) güvenlik değerlendirmesi yapan bir araçtır.
+Hiçbir brute-force, exploit veya yıkıcı test içermez.
+
+🚀 Özellikler
+🌐 Web Access Analizi
+
+OWA / ECP exposure kontrolü
+
+TLS yapılandırma kontrolü
+
+Security header analizi
+
+Cookie güvenlik bayrakları
+
+Auth-flow ipuçları (pasif)
+
+MFA heuristic tespiti
+
+Exchange header fingerprint (hostname leak)
+
+🧭 DNS Policy Analizi
+
+SPF kontrolü
+
+DKIM varlık kontrolü
+
+DMARC politika analizi
+
+MTA-STS kontrolü
+
+TLS-RPT kontrolü
+
+MX / A / AAAA / PTR keşfi
+
+📮 SMTP Transport Analizi
+
+SMTP banner inceleme
+
+STARTTLS desteği kontrolü
+
+TLS handshake & sertifika doğrulama (best-effort)
+
+AUTH advertise kontrolü
+
+Port kapsamı:
+
+25
+
+587
+
+465
+
+🛡️ SAFE Tasarım Prensibi
+❌ Araç şunları YAPMAZ
+
+Brute force
+
+Credential spraying
+
+Exploitation
+
+Persistence
+
+Destructive testing
+
+✅ Tamamen pasif ve güvenli değerlendirme odaklıdır.
+
+⚙️ Kurulum
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-```
-
-## Quick run (non-interactive)
-```bash
-python3 mailsec_audit.py --domain example.com --web https://mail.example.com --smtp mail.example.com --format all
-```
-
-## Interactive MSF-style shell (optional)
-```bash
+⚡ Hızlı Çalıştırma (Non-Interactive)
+python3 mailsec_audit.py \
+  --domain example.com \
+  --web https://mail.example.com \
+  --smtp mail.example.com \
+  --format all
+🖥️ Interactive MSF-Style Shell (Opsiyonel)
 python3 mailsec_audit.py --shell
-```
-Example:
-```
+🧪 Örnek Kullanım
 mailsec > use web/owa
 mailsec (web/owa) > set WEB https://mail.example.com
 mailsec (web/owa) > run
@@ -39,43 +95,93 @@ mailsec (dns/policy) > run
 mailsec > use smtp/transport
 mailsec (smtp/transport) > set SMTP mail.example.com
 mailsec (smtp/transport) > run
-```
+📊 Raporlar
 
-## Reports
-All reports are written to `reports/` (default):
-- Markdown: `mailsec_<timestamp>.md`
-- JSON: `mailsec_<timestamp>.json`
-- HTML: `mailsec_<timestamp>.html`
+Tüm raporlar varsayılan olarak reports/ klasörüne yazılır:
 
+📝 Markdown → mailsec_<timestamp>.md
 
-## TR HTML Rapor
-Bu sürümde HTML rapor, yönetici özeti + risk matrisi + yol haritası içerecek şekilde yeniden tasarlanmıştır.
+🧾 JSON → mailsec_<timestamp>.json
 
+🌐 HTML → mailsec_<timestamp>.html
 
-## Yeni (SAFE) Özellikler
-- MFA tespiti (heuristic): OWA login akışında MFA ipuçları aranır; tespit edilemezse rapora 'heuristic' bulgu eklenir.
-- Header fingerprint: Exchange/OWA diagnostic header'larında olası iç hostname sızıntısı tespiti.
-- SMTP: 25/587/465 pasif kontroller (banner/EHLO/STARTTLS/TLS info/AUTH advertise).
-- DNS: MX/A/AAAA/PTR keşfi + SPF/DKIM/DMARC/MTA-STS/TLS-RPT.
+🇹🇷 HTML Dashboard
 
-Not: Brute-force / credential spray özellikleri bilinçli olarak yoktur.
+Yeni HTML rapor:
 
+✨ Yönetici özeti
+📉 Risk matrisi
+🗺️ Yol haritası
+🎨 Bordo / Beyaz / Gri dashboard tema
 
-## Manuel Doğrulama (Önerilen)
-Bu araç otomatik kullanıcı girişi / brute-force içermez. Yetkili testlerde pozitif kanıt için
-manuel doğrulama bilgileri CLI üzerinden girilebilir ve rapora eklenir.
+🧠 Yeni SAFE Özellikler
 
-Örnek:
-python3 mailsec_audit.py --domain example.com --web https://mail.example.com --smtp mail.example.com \
-  --manual-validation --tester "Ahmet Y." --account "DOMAIN\\testuser" \
-  --login-success yes --mfa-prompted no --idp "Entra ID" --evidence-ref "IMG-2026-01" --format all
+🔐 MFA heuristic detection
 
-## Ek SAFE Modüller
-- smtp/policy_matrix: AUTH/STARTTLS ilişkisi ve submission politikası için özet matris (şifre denemeden)
-- mail/surface_map: POP3/IMAP yüzey haritası (banner/TLS bilgi)
-- mail/send_controls: internal spoof ve gönderim politikaları için checklist (manuel doğrulama ile kanıt bağlanır)
+🧬 Header fingerprint (internal hostname leak)
 
+📡 SMTP pasif analiz (25/587/465)
 
+🌍 Genişletilmiş DNS keşfi
 
-## Dashboard HTML (TR)
-HTML rapor sadeleştirildi ve dashboard görünüme alındı (bordo/beyaz/gri).
+📊 Submission policy matrix
+
+🗺️ Mail surface mapping
+
+🔍 Manuel Doğrulama (Önerilen)
+
+Araç otomatik login veya brute-force içermez.
+Yetkili testlerde pozitif kanıt için manuel doğrulama eklenebilir.
+
+✍️ Örnek
+python3 mailsec_audit.py \
+  --domain example.com \
+  --web https://mail.example.com \
+  --smtp mail.example.com \
+  --manual-validation \
+  --tester "Ahmet Y." \
+  --account "DOMAIN\\testuser" \
+  --login-success yes \
+  --mfa-prompted no \
+  --idp "Entra ID" \
+  --evidence-ref "IMG-2026-01" \
+  --format all
+🧩 Ek SAFE Modüller
+📊 smtp/policy_matrix
+
+AUTH / STARTTLS ilişkisi ve submission politikası özet matrisi
+(⚠️ şifre denemesi yapılmaz)
+
+🗺️ mail/surface_map
+
+POP3 / IMAP yüzey haritası
+(banner + TLS bilgisi)
+
+📬 mail/send_controls
+
+Internal spoof ve gönderim politikaları checklist
+(✔ manuel kanıt bağlanabilir)
+
+🎯 Amaç
+
+MailSec-Audit’in hedefi:
+
+✅ Hızlı görünürlük
+
+✅ Pasif güvenlik değerlendirmesi
+
+✅ Kurumsal raporlama
+
+✅ SAFE testing yaklaşımı
+
+⚠️ Yasal Uyarı
+
+Bu araç yalnızca:
+
+✔ Yetkili güvenlik testleri
+
+✔ Kurumsal değerlendirmeler
+
+✔ Savunma amaçlı analizler
+
+için kullanılmalıdır.
